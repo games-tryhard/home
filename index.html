@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeux d'Émojis</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
+            background-color: #282c34; /* Fond sombre pour la neige */
+            color: #ffcc00; /* Couleur du texte en jaune */
             margin: 0;
             padding: 20px;
+            overflow: hidden; /* Important pour que les flocons ne débordent pas */
         }
         header {
-            background-color: #ffcc00;
+            background-color: white; /* Fond blanc pour l'en-tête */
             padding: 20px;
             text-align: center;
+            position: relative; /* Permet de positionner le contenu au-dessus de la neige */
+            z-index: 1; /* Assure que le header est au-dessus des flocons */
         }
         nav ul {
             list-style-type: none;
@@ -28,22 +30,39 @@
         }
         nav a {
             text-decoration: none;
-            color: #333;
+            color: #333; /* Couleur des liens en noir */
             font-weight: bold;
         }
         main {
             margin-top: 20px;
+            position: relative; /* Permet de positionner le contenu au-dessus de la neige */
+            z-index: 1; /* Assure que le main est au-dessus des flocons */
         }
         section {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0); /* Fond transparent */
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: none; /* Pas d'ombre pour un effet plus léger */
         }
         footer {
             text-align: center;
             margin-top: 20px;
+            position: relative; /* Permet de positionner le contenu au-dessus de la neige */
+            z-index: 1; /* Assure que le footer est au-dessus des flocons */
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
         }
     </style>
 </head>
@@ -71,3 +90,32 @@
             <h2>À propos des Émojis 😊</h2>
             <p>Les émojis enrichissent nos communications en ajoutant des émotions et des nuances. Découvrez comment ils peuvent améliorer votre expérience en ligne.</p>
         </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Jeux d'Émojis</p>
+    </footer>
+
+<script>
+    // Fonction pour créer des flocons de neige
+    function createSnowflake() {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.innerHTML = '❄'; // Utilisation du caractère flocon de neige
+        snowflake.style.left = Math.random() * window.innerWidth + 'px';
+        snowflake.style.fontSize = Math.random() * 20 + 10 + 'px'; // Taille aléatoire des flocons
+        snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // Durée aléatoire de la chute
+        document.body.appendChild(snowflake);
+
+        // Supprimer le flocon après qu'il soit tombé
+        setTimeout(() => {
+            snowflake.remove();
+        }, 5000); // Correspond à la durée maximale d'animation
+    }
+
+    // Créer des flocons à intervalles réguliers
+    setInterval(createSnowflake, 300); // Crée un flocon toutes les 300 ms
+</script>
+
+</body>
+</html>
