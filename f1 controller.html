@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Formule 1</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #282c34;
+        }
+        #gameArea {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://pbs.twimg.com/media/EEaIRsSUUAEauu5?format=jpg&name=4096x4096'); /* Fond d'écran */
+            background-size: cover;
+        }
+        .car {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 120px;
+            background-image: url('https://vezess2.p3k.hu/app/uploads/2020/11/07-lamborghini-huracan-sto-15.jpg'); /* Voiture du joueur */
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .obstacle {
+            position: absolute;
+            width: 80px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+<div id="gameArea">
+    <div class="car" id="car"></div>
+</div>
+
+<script>
+    const car = document.getElementById('car');
+    const gameArea = document.getElementById('gameArea');
+    let carPosition = gameArea.clientWidth / 2 - 40; // Position initiale de la voiture
+    let obstacles = [];
+    let score = 0;
+
+    const obstacleImages = [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBIB_b6Ou0nRdWt7ER1BfcOyZpVZDmB7ofkw&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF4nThccjpz4cki_37Vqes0N4-KD41yc7GDg&s",
+        "https://hips.hearstapps.com/hmg-prod/images/2024-audi-rs7-performance-beach-front-2-1669663938.jpg?crop=0.439xw:0.329xh;0.436xw,0.412xh&resize=2048:*"
+    ];
+
+    function moveCar(event) {
+        if (event.key === 'ArrowLeft') {
+            carPosition -= 20; // Déplacer à gauche
+        } else if (event.key === 'ArrowRight') {
+            carPosition += 20; // Déplacer à droite
+        }
+
+        // Limiter la voiture à l'intérieur de la zone de jeu
+        if (carPosition < 0) carPosition = 0;
+        if (carPosition > gameArea.clientWidth - 80) carPosition = gameArea.clientWidth - 80;
+
+        car.style.left = carPosition + 'px';
+    }
+
+    function createObstacle() {
+        const obstacle = document.createElement('div');
+        obstacle.className = 'obstacle';
+        obstacle.style.left = Math.random() * (gameArea.clientWidth - 80) + 'px';
+        obstacle.style.top = '-120px'; // Commencer hors de l'écran
+
+        // Choisir une image aléatoire pour l'obstacle
+        const randomImage = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
+        obstacle.style.backgroundImage = `url('${randomImage}')`;
+
+        gameArea.appendChild(obstacle);
+        obstacles.push(obstacle);
+    }
+
+    function moveObstacles() {
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            const obstacle = obstacles[i];
+            let obstacleTop = parseInt(window.getComputedStyle(obstacle).getPropertyValue("top"));
+
+            if (obstacleTop > gameArea.clientHeight) {
+                obstacle.remove();
+                obstacles.splice(i, 1);
+                score++; // Augmenter le score si l'obstacle est évité
+                console.log("Score:", score);
+            } else {
+                obstacle.style.top = obstacleTop + 5 + 'px'; // Déplacer l'obstacle vers le bas
+            }
+
+            // Vérification de collision
+            if (
+                obstacleTop + 120 >= gameArea.clientHeight - 10 &&
+                parseInt(obstacle.style.left) < carPosition + 80 &&
+                parseInt(obstacle.style.left) + 80 > carPosition
+            ) {
+                alert("Collision ! Votre score : " + score);
+                document.location.reload(); // Recharger la page pour recommencer le jeu
+            }
+        }
+    }
+
+    function gameLoop() {
+        moveObstacles();
+        requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener('keydown', moveCar);
+    setInterval(createObstacle, 2000); // Créer un nouvel obstacle toutes les 2 secondes
+    gameLoop(); // Démarrer la boucle du jeu
+
+</script>
+
+</body>
+</html>
