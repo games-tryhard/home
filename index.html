@@ -7,49 +7,43 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #282c34; /* Fond sombre pour la neige */
-            color: #ffcc00; /* Couleur du texte en jaune */
+            background-color: #282c34;
+            color: #ffcc00;
             margin: 0;
             padding: 20px;
-            overflow: hidden; /* Important pour que les flocons ne débordent pas */
+            overflow: hidden;
         }
         header {
-            background-color: white; /* Fond blanc pour l'en-tête */
+            background-color: white;
             padding: 20px;
             text-align: center;
-            position: relative; /* Permet de positionner le contenu au-dessus de la neige */
-            z-index: 1; /* Assure que le header est au-dessus des flocons */
+            position: relative;
+            z-index: 1;
         }
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #333; /* Couleur des liens en noir */
-            font-weight: bold;
+        /* Suppression de la navigation */
+        nav {
+            display: none;
         }
         main {
             margin-top: 20px;
-            position: relative; /* Permet de positionner le contenu au-dessus de la neige */
-            z-index: 1; /* Assure que le main est au-dessus des flocons */
+            position: relative;
+            z-index: 1;
+            display: flex; /* Utilisation de flexbox pour l'alignement */
+            flex-wrap: wrap; /* Permet de passer à la ligne suivante */
+            justify-content: center; /* Centrer l'élément */
         }
         section {
-            background-color: rgba(255, 255, 255, 0); /* Fond transparent */
+            background-color: rgba(255, 255, 255, 0);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: none; /* Pas d'ombre pour un effet plus léger */
+            box-shadow: none;
         }
         footer {
             text-align: center;
             margin-top: 20px;
-            position: relative; /* Permet de positionner le contenu au-dessus de la neige */
-            z-index: 1; /* Assure que le footer est au-dessus des flocons */
+            position: relative;
+            z-index: 1;
         }
         .snowflake {
             position: absolute;
@@ -63,6 +57,48 @@
             to {
                 transform: translateY(100vh);
             }
+        }
+
+        /* Styles pour la section de jeu F1 (ajustements) */
+        .f1-game {
+            width: auto; /* Ajustement automatique de la largeur */
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #666; /* Ajout d'une bordure */
+            box-sizing: border-box; /* Inclut la bordure dans la largeur */
+            margin: 5px; /* Ajout d'une marge pour l'espacement */
+            max-width: 300px; /* Largeur maximale */
+        }
+
+        .f1-game img {
+            width: 100%;
+            transition: transform 0.3s ease, opacity 0.3s ease; /* Animation de l'opacité */
+            border-radius: 8px;
+            display: block;
+        }
+
+        .f1-game:hover img {
+            transform: scale(1.1);
+            opacity: 0.85;
+        }
+
+        .f1-game::before {
+            content: "F1 Controller - Simple 😀"; /* Texte modifié */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2em; /* Taille de police réduite */
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .f1-game:hover::before {
+            opacity: 1;
         }
     </style>
 </head>
@@ -86,9 +122,11 @@
             <p>... Mais des jeux difficiles ! En effet, la plupart des jeux seront construits en HTML, rendant les graphismes simples, mais le code a beau être en HTML, les jeux seront TRES DURS!</p>
         </section>
 
-        <section>
-            <h2>À propos des Émojis 😊</h2>
-            <p>Les émojis enrichissent nos communications en ajoutant des émotions et des nuances. Découvrez comment ils peuvent améliorer votre expérience en ligne.</p>
+        <!-- Section f1-game unique avec lien vers le fichier HTML -->
+        <section class="f1-game">
+            <a href="f1 controller.html">
+                <img src="https://imgresizer.eurosport.com/unsafe/725x408/filters:format(png)/origin-imgresizer.eurosport.com/2025/02/18/image-d77774b2-198d-4c6f-bd6f-618e7f9e8d4c-85-2560-1440.png" alt="F1 Controller">
+            </a>
         </section>
     </main>
 
@@ -97,24 +135,21 @@
     </footer>
 
 <script>
-    // Fonction pour créer des flocons de neige
     function createSnowflake() {
         const snowflake = document.createElement('div');
         snowflake.className = 'snowflake';
-        snowflake.innerHTML = '❄'; // Utilisation du caractère flocon de neige
+        snowflake.innerHTML = '❄';
         snowflake.style.left = Math.random() * window.innerWidth + 'px';
-        snowflake.style.fontSize = Math.random() * 20 + 10 + 'px'; // Taille aléatoire des flocons
-        snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // Durée aléatoire de la chute
+        snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
+        snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
         document.body.appendChild(snowflake);
 
-        // Supprimer le flocon après qu'il soit tombé
         setTimeout(() => {
             snowflake.remove();
-        }, 5000); // Correspond à la durée maximale d'animation
+        }, 5000);
     }
 
-    // Créer des flocons à intervalles réguliers
-    setInterval(createSnowflake, 300); // Crée un flocon toutes les 300 ms
+    setInterval(createSnowflake, 300);
 </script>
 
 </body>
